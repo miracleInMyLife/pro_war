@@ -1,0 +1,40 @@
+{
+    "floorBackGround": "https://image.suning.cn/uimg/sfp/ad/154711379994542713.jpg",
+    "knowMore": "",
+    "floorName": "信用生活",
+    "insuranceCacheBean": {
+        "lists": [
+            {
+                "name": "  ",
+                "picUrl": "https://image.suning.cn/uimg/sfp/ad/157650694285947386.png",
+                "seoname": "https://rxf.suning.com/epps-cpf/app/darwMgt/assetOverview.do?darwPlatform=y",
+                "sketch": "",
+                "targetUrl": "https://rxf.suning.com/epps-cpf/app/darwMgt/assetOverview.do?darwPlatform=y"
+            },
+            {
+                "name": " ",
+                "picUrl": "https://image.suning.cn/uimg/sfp/ad/157650695942654331.png",
+                "seoname": "https://jinrong.suning.com/scms/waprxf11.html?module_source=fqsc",
+                "sketch": " ",
+                "targetUrl": "https://jinrong.suning.com/scms/waprxf11.html?module_source=fqsc"
+            },
+            {
+                "name": " ",
+                "picUrl": "https://image.suning.cn/uimg/sfp/ad/157710096554035255.png",
+                "seoname": "https://jinrong.suning.com/scms/waplc_jjxlcxl.html",
+                "sketch": "",
+                "targetUrl": "https://jinrong.suning.com/scms/waplc_jjxlcxl.html"
+            },
+            {
+                "name": " ",
+                "picUrl": "https://image.suning.cn/uimg/sfp/ad/157710112907627529.png",
+                "seoname": "https://rxf.suning.com/epps-cpf/app/darwMgt/assetOverview.do?darwPlatform=y",
+                "sketch": "",
+                "targetUrl": "https://rxf.suning.com/epps-cpf/app/darwMgt/assetOverview.do?darwPlatform=y"
+            }
+        ],
+        "total": 4
+    },
+    "responseCode": "0000",
+    "responseMsg": "成功"
+}
