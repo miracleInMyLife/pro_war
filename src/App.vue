@@ -11,7 +11,6 @@
 
 <script>
 import FooterGuider from './components/FooterGuider/FooterGuider.vue'
-// import GoodDetails from './components/GoodDetail/GoodDetail'
 
 export default {
   name: 'app',

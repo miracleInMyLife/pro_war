@@ -1,0 +1,11 @@
+{
+	"name": "pro-server",
+	"version": "1.0.0",
+	"dependence": {},
+	"devDependencies": {
+		"jsonwebtoken": "^8.5.1"
+	},
+	"dependencies": {
+		"express": "^4.17.1"
+	}
+}

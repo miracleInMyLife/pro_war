@@ -13,7 +13,6 @@
 
 作用: 减小首屏需要加载的js文件 ==> 显示更快
 */
-// import FooterGuider from '../components/FooterGuider/FooterGuider.vue'
 
 import GoodDetail from '../components/GoodDetail/GoodDetail.vue'
 import Imgs from '../components/GoodDetail/Imgs.vue'
@@ -30,6 +29,8 @@ import Supermarket from '../pages/mustBuy/channel/supermarket.vue'
 import Closes from '../pages/mustBuy/channel/closes.vue'
 import Category from '../pages/category/category.vue'
 import Home from '../pages/Home/Home.vue'
+import Profile from '../pages/profile/profile.vue'
+import ShopCar from '../pages/shopCar/shopCar.vue'
 
 
 
@@ -37,6 +38,10 @@ export default [
     {
         path:'/home',
         component:Home
+    },
+    {
+        path:'/category',
+        component: Category, 
     },
     {
         path:'/mustBuy',
@@ -69,8 +74,16 @@ export default [
         ]
     },
     {
-        path:'/category',
-        component: Category, 
+        path:'/shopCar',
+        component: ShopCar,
+    },
+    {
+        path:'/profile',
+        component: Profile,
+    },
+    {
+        path:'',
+        redirect: 'home',
     },
     {
         path:'/search',
