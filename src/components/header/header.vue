@@ -8,10 +8,10 @@
     </div>
     <div class="tabNav" ref="tabNav" :class="{fixed:isFixed}">
         <ul class="content">
-          <li class='tabLi' v-for="(item,index) in items" :key="index" :class="{active:selectedId === index}" @click="tabNav(item,index)">
+          <li class='tabLi' v-for="(item,index) in data.data" :key="index" :class="{active:selectedId === index}" @click="tabNav(index)">
             <div class='liContent'>
-              <img src="../../imgs/1.png" alt="">
-              <i>{{item.label}}</i>
+              <img :src="item.dbExtInfo" alt="">
+              <i>{{item.enrollCateName}}</i>
             </div>
           </li>
         </ul>
@@ -21,52 +21,57 @@
 
 <script type="text/ecmascript-6">
  import BScroll from 'better-scroll'
-  export default {
-    /**
-     * 
-     * 
-     */
-    mounted() {
-       new BScroll(this.$refs.tabNav,{
-        scrollX: true,
-        click: true
-      }),
-      window.addEventListener('scroll',this.handleScroll)
-  },
-  methods: {
-    tabNav(item,index){
-      this. selectedId = index
-      this.$router.replace(item.path)
-    },
-    handleScroll(){
-      let  scrollTop = window.pageYOffset || 
-      document.documentElement.scrollTop ||
-       document.body.scrollTop;
-      // let offsetTop = document.querySelector('.tabNav').offsetTop
-        if (scrollTop > 300) {
-        this.isFixed = true
-        } else {
-        this.isFixed = false
-        }
-    }
-  },
-   destroyed () {
-    window.removeEventListener('scroll', this.onScroll)
-  },
+ import {mapState} from 'vuex'
 
-    
+  export default {
+    mounted() {
+   
+    // 页面滑动一段距离后，导航固定===》吸顶效果
+       document.addEventListener('scroll',this.handleScroll)
+
+    //  发请求
+    this.$store.dispatch('getTabBar')
+
+    },
+    computed: {
+      ...mapState(['data'])
+    },
+    watch: {
+        data(){
+          this.$nextTick(()=>{
+            //  导航左右滑动
+            new BScroll(this.$refs.tabNav,{
+              scrollX: true,
+              click: true
+            })
+
+          })
+        },
+    },
+
+    methods: {
+      tabNav(index){
+        this. selectedId = index
+      },
+      handleScroll(){
+        // console.log("###")
+        let  scrollTop = window.pageYOffset || 
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+        // let offsetTop = document.querySelector('.tabNav').offsetTop
+          if (scrollTop > 35) {
+          this.isFixed = true
+          } else {
+          this.isFixed = false
+          }
+      }
+    },
+    destroyed () {
+      window.removeEventListener('scroll', this.onScroll)
+    },   
   data () {
     return {
       selectedId: 0,
-
-      items: [
-        {label: '首页',path:'/mustBuy'},
-        {label: '家电',path:'/mustBuy/electrics'},
-        {label: '酷机',path:'/mustBuy/coolMachine'},
-        {label: '超市',path:'/mustBuy/supermarket'},
-        {label: '穿搭',path:'/mustBuy/closes'},
-       
-      ],
       isFixed:false
      
     }

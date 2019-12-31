@@ -2,53 +2,17 @@
   <div>
     <!-- 限时抢购，大聚会等 -->
     <div class="panicBuy">
-      <ul class="panicUl">
-        <li>
-          <h3>限时抢购</h3>
-          <p>潮流好物限时抢</p>
+      <ul class="panicUl" v-if="datainfo.length>0">
+        <li v-for="(panic,index) in datainfo[1].panic" :key="index">
+          <h3>{{panic.title}}</h3>
+          <p>{{panic.name}}</p>
           <div class="panic-left">
-            <img src="https://image1.suning.cn/uimg/nmps/MBLSPZT/10040409411203592742picH_1_370x370.jpg" alt="">
-            <p>￥2.7</p>
+            <img :src="panic.picurl1" alt="">
+            <p>{{panic.price1}}</p>
           </div>
           <div class="panic-right">
-            <img src="https://image3.suning.cn/uimg/nmps/MBLSPZT/10040341311191655059picH_1_370x370.jpg" alt="">
-            <p>￥9.9</p>
-          </div>
-        </li>
-        <li>
-          <h3>限时抢购</h3>
-          <p>潮流好物限时抢</p>
-          <div class="panic-left">
-            <img src="https://image1.suning.cn/uimg/nmps/MBLSPZT/10040409411203592742picH_1_370x370.jpg" alt="">
-            <p>￥2.7</p>
-          </div>
-          <div class="panic-right">
-            <img src="https://image3.suning.cn/uimg/nmps/MBLSPZT/10040341311191655059picH_1_370x370.jpg" alt="">
-            <p>￥9.9</p>
-          </div>
-        </li>
-        <li>
-          <h3>限时抢购</h3>
-          <p>潮流好物限时抢</p>
-          <div class="panic-left">
-            <img src="https://image1.suning.cn/uimg/nmps/MBLSPZT/10040409411203592742picH_1_370x370.jpg" alt="">
-            <p>￥2.7</p>
-          </div>
-          <div class="panic-right">
-            <img src="https://image3.suning.cn/uimg/nmps/MBLSPZT/10040341311191655059picH_1_370x370.jpg" alt="">
-            <p>￥9.9</p>
-          </div>
-        </li>
-        <li>
-          <h3>限时抢购</h3>
-          <p>潮流好物限时抢</p>
-          <div class="panic-left">
-            <img src="https://image1.suning.cn/uimg/nmps/MBLSPZT/10040409411203592742picH_1_370x370.jpg" alt="">
-            <p>￥2.7</p>
-          </div>
-          <div class="panic-right">
-            <img src="https://image3.suning.cn/uimg/nmps/MBLSPZT/10040341311191655059picH_1_370x370.jpg" alt="">
-            <p>￥9.9</p>
+            <img :src="panic.picurl2" alt="">
+            <p>{{panic.price2}}</p>
           </div>
         </li>
       </ul>
@@ -77,8 +41,8 @@
       <div class="footer">
         <img src="https://image1.suning.cn/uimg/cms/img/157164888626937126.png" alt="">
         <div class="swiper-container swiper-no-swiping" ref="desc">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="(item,index) in desc.skus" :key="index">
+          <div class="swiper-wrapper" v-if="datainfo.length>0">
+            <div class="swiper-slide" v-for="(item,index) in datainfo[0].skus" :key="index">
               <span class="btn">{{item.label}}</span>
               <span class="desc">{{item.title}}</span>
             </div>
@@ -105,22 +69,23 @@
   export default {
     data(){
       return {
-        desc:{}
+        datainfo:{}
       }
     },
     async mounted(){
       let result = await reqDesc()
-      if (result.code === 0) {
-        this.desc = result.data
+      if (result.status === 1) {
+        this.datainfo = result.datas.sugGoods
       }
-      new Swiper(this.$refs.desc,{
+      this.$nextTick(()=>{
+        new Swiper(this.$refs.desc,{
           direction: 'vertical',
           autoplay: {
             delay: 3000,//3秒切换一次
           },
-          loop:true,
-          observer:true
+          loop:true
         })
+      })
       
     }
   }

@@ -1,86 +1,146 @@
 <template>
   <div>
       <div class="sn-list-box">
-        <div class="sn-list-nav">
-          <ul>
-            <li class="cur kindsAds" @click="toHousehold">
+        <div class="sn-list-nav" ref="left" v-if="data1.category">
+          <ul ref='leftUI'>
+            <li class=" kindsAds" :class="{cur: index === currentIndex}" 
+             @click="clickItem(index)" 
+             v-for="(category,index) in data1.category" 
+             :key="category.title">
               <div class="before"></div>
-              热门推荐
+              {{category.title}}
               <div class="after"></div>
-            </li>
-           <li class=" kindsAds">
-              <div class="before"></div>
-              热门推荐 
-            </li>
-            <li class="kindsAds">
-              <div class="before"></div>
-              热门推荐  
-            </li>
-            <li class="kindsAds">
-              <div class="before"></div>
-              热门推荐           
             </li>
           </ul>
         </div>
-        <div class="sn-list-con">
-          <div class="con-box">
-            <div class="newRecommendList"></div>
-            <hgroup class="module-title class-title">
-              <div class="line"></div>
-              <em>热门推荐</em>
-            </hgroup>
-            <div class="household-recommend">
-              <ul>
-                <li>
-                  <a class="neibuLi" href="//m.suning.com/search/空调/">
-                    <img src="//image4.suning.cn/uimg/asbs/ad/1526974072412_app_wap_list.jpg" alt="">
-                    <div class="backgroundImg"></div>
-                    <em>空调</em>
-                  </a>
-                </li>
-                 <li>
-                  <a class="neibuLi" href="//m.suning.com/search/空调/">
-                    <img src="//image4.suning.cn/uimg/asbs/ad/1526974072412_app_wap_list.jpg" alt="">
-                    <div class="backgroundImg"></div>
-                    <em>空调</em>
-                  </a>
-                </li>
-                 <li>
-                  <a class="neibuLi" href="//m.suning.com/search/空调/">
-                    <img src="//image4.suning.cn/uimg/asbs/ad/1526974072412_app_wap_list.jpg" alt="">
-                    <div class="backgroundImg"></div>
-                    <em>空调</em>
-                  </a>
-                </li>
-                 <li>
-                  <a class="neibuLi" href="//m.suning.com/search/空调/">
-                    <img src="//image4.suning.cn/uimg/asbs/ad/1526974072412_app_wap_list.jpg" alt="">
-                    <div class="backgroundImg"></div>
-                    <em>空调</em>
-                  </a>
-                </li>
-                 <li>
-                  <a class="neibuLi" href="//m.suning.com/search/空调/">
-                    <img src="//image4.suning.cn/uimg/asbs/ad/1526974072412_app_wap_list.jpg" alt="">
-                    <div class="backgroundImg"></div>
-                    <em>空调</em>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+        <div class="sn-list-con" ref="right" v-if="data1.category">
+          <ul class="con-box"  ref="rightUl">
+            <li v-for="(ct,index) in data1.category" :key="ct.title">
+              <div class="newRecommendList"></div>
+              <hgroup class="module-title class-title">
+                <div class="line"></div>
+                <em>{{ct.title}}</em>
+              </hgroup>
+              <div class="household-recommend">
+                <ul>
+                  <li v-for="(c,index) in ct.detail" :key="index">
+                    <a class="neibuLi" href="//m.suning.com/search/空调/">
+                      <img :src="c.imgUrl" alt="">
+                      <div class="backgroundImg"></div>
+                      <em>{{c.name}}</em>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+
         </div>
       </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import {mapState} from 'vuex'
+import BScroll from 'better-scroll'
+
   export default {
-    methods: {
-      toHousehold(){
-        
+    data(){
+      return{
+      //  current:0,
+       scrollY:0,
+       tops:[]
       }
     },
+
+   computed: {
+      ...mapState({
+        "data1":"data" || {}
+      }),
+      
+      currentIndex(){
+        const {scrollY,tops} = this
+        const index = tops.findIndex((top,index)=>scrollY>=top && scrollY<tops[index+1])
+        console.log(index, scrollY)
+        if(index != this.index && this.leftScroll){
+            this.index = index
+            const li = this.$refs.leftUI.children[index]
+            this.leftScroll.scrollToElement(li,300)         
+        }
+        return index
+      }
+    },
+   
+    methods: {
+      _initScroll(){
+
+        if(!this.leftScroll ){
+
+          this.leftScroll = new BScroll(this.$refs.left,{
+            click:true
+          })
+          this.rightScroll = new BScroll(this.$refs.right,{
+             probeType: 2,
+             click:true
+          })
+
+          // 绑定监听
+          this.rightScroll.on('scroll',({x,y})=>{
+            console.log(y,'111')
+             this.scrollY = Math.abs(y)
+          })
+          this.rightScroll.on('scrollEnd',({x,y})=>{
+            console.log(y,'hhh')
+            this.scrollY = Math.abs(y)
+
+          })
+        }else{
+          // 重新刷新
+          this.leftScroll.refresh()
+          this.rightScroll.refresh()
+        }
+      },
+      _initTops () {
+        const tops = []
+        let top = 0
+        tops.push(top)
+        // if (this.$refs.rightUl.children.length){
+          const lis = Array.from(this.$refs.rightUl.children)
+            lis.forEach(li => {
+              top += li.clientHeight
+              tops.push(top)
+            })
+          this.tops = tops
+        // }      
+    },
+
+    clickItem (index) {  
+      const top = this.tops[index]
+      // this.scrollY = top
+      console.log(top, 'top')
+      this.rightScroll.scrollTo(0, -top,100)
+    },
+  },
+     watch: {
+      data1() { 
+        this.$nextTick(() => {
+          this._initScroll()
+          this._initTops()
+        })
+      }
+    },
+     mounted() {
+      // 分发
+        this.$store.dispatch('getCategory')
+
+   // 如果数据已经有了, 直接做初始化的操作
+        if (this.data1.length>0) {
+        //   console.log('mounted data')
+          this._initScroll()
+          this._initTops()
+        }
+    },
+   
 
   }
 </script>
@@ -91,6 +151,8 @@
       background-color #ffffff
       margin-top 44px
       .sn-list-nav
+        overflow-x hidden
+        overflow-y hidden
         position fixed
         left 0
         top 44px
@@ -115,7 +177,7 @@
             &.cur 
               border-right-color: transparent;
               background: #FFF;
-              font-size: 14px;
+              font-size: 16px;
             .before
               position absolute
               left 0 
@@ -134,80 +196,85 @@
         margin 0 0 0 86px
         padding 10px
         overflow auto 
+        //  问题：用better-scroll要加高度
+        height calc(100vh - 44px)
         .con-box
           width 270px
-          .newRecommendList
-            width 270px
-          .module-title
-            position relative
+          li
             width 100%
-            text-align left
-            margin 30px auto 20px auto
-            .line
-              width 100%
-              position absolute
-              top 10px
-              left 0
-              height 1px
-              background-color #f2f2f2
-            em 
-              background-color #ffffff
-              padding 0 5px 0 0
-              display inline-block
+            height 100%
+            .newRecommendList
+              width 270px
+            .module-title
               position relative
-              height 12px
-              line-height 12px
-              font-size 12px
-              vertical-align center
-              font-style: normal;
-              font-family: Arial,Helvetica,STHeiTi,sans-serif;
-          .household-recommend
-            width 270px
-            overflow hidden
-            ul 
+              width 100%
+              text-align left
+              margin 30px auto 20px auto
+              .line
+                width 100%
+                position absolute
+                top 10px
+                left 0
+                height 1px
+                background-color #f2f2f2
+              em 
+                background-color #ffffff
+                padding 0 5px 0 0
+                display inline-block
+                position relative
+                height 12px
+                line-height 12px
+                font-size 12px
+                vertical-align center
+                font-style: normal;
+                font-family: Arial,Helvetica,STHeiTi,sans-serif;
+            .household-recommend
               width 270px
               overflow hidden
-              margin-top -15px
-              li
-                float left 
-                width 90px
-                margin-top 15px
-                a 
-                  display block
-                  color #353d44
-                  text-decoration none 
+              ul 
+                width 270px
+                overflow hidden
+                margin-top -15px
+                li
+                  float left 
                   width 90px
-                  height 85px
-                  img 
-                    width 60px
-                    height 60px
-                    position relative
-                    vertical-align middle
-                    margin 0 15px 5px 15px
-                  .backgroundImg
-                    width: 60px;
-                    height:60px;
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    background: url(imgs/patternless.png) no-repeat;
-                    background-size: cover;
-                    z-index: 3
-                  em 
-                    display: block;
-                    white-space: nowrap;
-                    font-size: 12px;
-                    height: 20px;
-                    line-height: 20px;
-                    text-align: center;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    color: #666;
-                    font-weight: normal;
-                    font-style: normal;
+                  margin-top 15px
+                  a 
+                    display block
+                    color #353d44
+                    text-decoration none 
+                    width 90px
+                    height 85px
+                    img 
+                      width 60px
+                      height 60px
+                      position relative
+                      vertical-align middle
+                      margin 0 15px 5px 15px
+                    .backgroundImg
+                      width: 60px;
+                      height:60px;
+                      position: absolute;
+                      left: 0;
+                      top: 0;
+                      background: url(imgs/patternless.png) no-repeat;
+                      background-size: cover;
+                      z-index: 3
+                    em 
+                      display: block;
+                      white-space: nowrap;
+                      font-size: 12px;
+                      height: 20px;
+                      line-height: 20px;
+                      text-align: center;
+                      text-overflow: ellipsis;
+                      overflow: hidden;
+                      color: #666;
+                      font-weight: normal;
+                      font-style: normal;
 
 
 
 
- 
+  
 </style>

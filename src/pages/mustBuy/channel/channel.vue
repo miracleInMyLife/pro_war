@@ -1,72 +1,37 @@
 <template>
   <div class='channelContainer'>
-      <!-- <div class='topNav'>
-        <div class="navLeft">
-          <span class="iconfont">&#xe642;</span> 
-        </div>
-        <div class="navRight"></div>
-      </div>
-      <div class="tabNav" ref="tabNav" :class="{fixed:isFixed}">
-        <ul class="content">
-          <li class='tabLi' v-for="(item,index) in items" :key="index" :class="{active:selectedId === index}" @click="tabNav(index)">
-            <div class='liContent'>
-              <img src="../../../imgs/1.png" alt="">
-              <i>{{item.label}}</i>
-            </div>
-          </li>
-        </ul>
-      </div>      -->
+    
       <Header/>
 
-      <div class="floor" >
+      <div class="floor" v-if="data.buyList">      
           <AppList></AppList>
-          <div class="floor-bottom">
+          <div class="floor-bottom"  v-for="(sk,index) in data.buyList.goods" :key="index" >
             <div class="bottom-top">
-              <div class="gl-bg" v-if="data.skus">
-                <img :src="data.skus[1].imageUrl" alt="">
+              <div class="gl-bg">
+                <img :src="sk.imageUrl" alt="">
                 <i class="gl-tag">
-                  <span class="f28 bold" >{{data.skus[1].displayJson.productCnt}}</span>
+                  <span class="f28 bold" >{{sk.displayJson.productCnt}}</span>
                   <span class='f28'>商品</span>
                 </i>
-                <p class="line-clamp-2">{{data.skus[1].title}}</p>
+                <p class="line-clamp-2">{{sk.title}}</p>
               </div>
             </div>
-            <ul class='pic-img'  v-if="data.skus">
-              <li class='bottom-li' v-for="(gd,index) in data.skus" :key="index">
+            <ul class='pic-img'>
+              <li class='bottom-li' v-for="(gd,index) in sk.gds" :key="index">
                   <div class='_img' >
                     <div class="zhezhao"></div>
-                    <!-- <img :src="" alt=""> -->
-                    <i class="f24">蒙牛蒙牛蒙牛蒙牛蒙牛蒙牛 </i>
+                    <img :src="gd.pictureUrl" alt="">
+                    <i class="f24">{{gd.sugGoodsName}} </i>
                   </div>
                   <div class='pro-price'>
-                    <i class="acDec borders" style="border:none;height:14px">领券中心</i>
-                    <i class='rPrice'>￥47.5</i>
+                    <i class="acDec borders" style="border:none;height:14px" v-if="gd.potic">{{gd.potic}}</i>
+                    <div :class="{zhezhao1:!gd.potic}"></div>
+                    <i class='rPrice'>￥{{gd.price}}</i>
                   </div>
               </li>
-              <!-- <li class='bottom-li'>
-                  <div class='_img' >
-                    <div class="zhezhao"></div>
-                    <img src="//imgservice.suning.cn/uimg1/b2c/image/tgalVdcl7oCnki7huPIdxQ.jpg?format=400h_400w_4e_80q.webp" alt="">
-                    <i class="f24">蒙牛蒙牛蒙牛蒙牛蒙牛蒙牛 </i>
-                  </div>
-                  <div class='pro-price'>
-                    <i class="acDec borders" style="border:none;height:14px">领券中心</i>
-                    <i class='rPrice'>￥47.5</i>
-                  </div>
-              </li>
-              <li class='bottom-li'>
-                  <div class='_img' >
-                    <div class="zhezhao"></div>
-                    <img src="//imgservice.suning.cn/uimg1/b2c/image/tgalVdcl7oCnki7huPIdxQ.jpg?format=400h_400w_4e_80q.webp" alt="">
-                    <i class="f24">蒙牛蒙牛蒙牛蒙牛蒙牛蒙牛 </i>
-                  </div>
-                  <div class='pro-price'>
-                    <i class="acDec borders" style="border:none;height:14px">领券中心</i>
-                    <i class='rPrice'>￥47.5</i>
-                  </div>
-              </li> -->
             </ul>
           </div>
+
       </div> 
 
   </div>
@@ -74,9 +39,9 @@
 
 <script>
 
-    // import BScroll from 'better-scroll'
+    import BScroll from 'better-scroll'
     import {mapState} from 'vuex'
-    // import {getSelect} from '../../../api/index'
+    import {getSelect} from '../../../api/index'
 
 	export default {
 
@@ -86,57 +51,8 @@
     },
     mounted() {
       this.$store.dispatch('getSelect')
+      console.log(this.data)
     },
-
-  // mounted() {
-  //      new BScroll(this.$refs.tabNav,{
-  //       scrollX: true,
-  //       click: true
-  //     }),
-  //     window.addEventListener('scroll',this.handleScroll)
-  // },
-  // methods: {
-  //   tabNav(index){
-  //     this. selectedId = index
-  //   },
-  //   handleScroll(){
-  //     let  scrollTop = window.pageYOffset || 
-  //     document.documentElement.scrollTop ||
-  //      document.body.scrollTop;
-  //     // let offsetTop = document.querySelector('.tabNav').offsetTop
-  //       if (scrollTop > 300) {
-  //       this.isFixed = true
-  //       } else {
-  //       this.isFixed = false
-  //       }
-  //   }
-  // },
-  //  destroyed () {
-  //   window.removeEventListener('scroll', this.onScroll)
-  // },
-
-    
-  // data () {
-  //   return {
-  //     selectedId: 0,
-
-  //     items: [
-  //       {label: '首页'},
-  //       {label: '推荐'},
-  //       {label: 'Android'},
-  //       {label: '前端'},
-  //       {label: '后端'},
-  //       {label: 'iOS'},
-  //       {label: '产品'},
-  //       {label: '人工智能'},
-  //       {label: '设计'}
-  //     ],
-  //     isFixed:false
-     
-  //   }
-  // }
-
-
 
 }
 </script>
@@ -237,6 +153,7 @@
                 align-items center
                 margin-top 20px
                 font-style: normal;
+                position relative
                 .acDec
                   margin: 0 auto;
                   border-radius: 2px;
@@ -244,6 +161,7 @@
                   padding: 3px;
                   border: 1px solid #ff2a57;
                   font-style: normal;
+                
                   &.borders
                     border: 1px solid #ff2a57;
                     background: #ffedef
@@ -254,6 +172,14 @@
                     width 100%
                     text-align center
                     font-style normal
+                    position absolute
+                    bottom 0 
+                    left 0
+                .zhezhao1
+                  width 100%
+                  height 22px
+                  z-index 999
+                  background-color transparent
          
           
 

@@ -1,11 +1,12 @@
 <template>
   <div id="searchContainer">
-    <div class="readySearch" v-if="isShow">
-      <SearchHeader :isShow="isShow"></SearchHeader>
+    <div class="readySearch" v-if="!searchList.length">
+                                        <!-- 这个值是用户点击热词时传到搜索头部显示 -->
+      <SearchHeader :isShow="!searchList.length" :currentHotWord="currentHotWord"></SearchHeader>
       <div class="bodyContainer">
         <div class="hotSearch">热门搜索</div>
         <div class="hotContent">
-          <div class="hotItem" v-for="(hotItem,index) in hotItems" :key="index" :style="`color : ${hotItem.color}`">{{hotItem.text}}</div>
+          <div class="hotItem" v-for="(hotItem,index) in hotItems" :key="index" :style="`color : ${hotItem.color}`" @click="clickHotSearch(hotItem.text)">{{hotItem.text}}</div>
         </div>
       </div>
     </div>
@@ -21,111 +22,27 @@
         <div class="brand">品牌</div>
       </div>
       <div class="goodContainer">
-        <div class="goodItem">
+        <div class="goodItem" v-for="(searchItem,index) in searchList" :key="index" @click="intoGoodDetail(searchItem)">
           <div class="leftImg">
-            <img src="../../common/images/pro.png" alt="">
+            <img :src="searchItem.pictureUrl" alt="">
           </div>
           <div class="rightInfo">
             <p class="right1">
-              <span class="selfBus">自营</span>
-              <span class="title">Apple iPhone 11 128G</span>
+              <span class="title"><span class="selfBus">自营</span>{{searchItem.sugGoodsName}}</span>
             </p>
             <p class="right2 info">白色 | 双卡双待 | 全网通 </p>
             <p class="right3">
               <span><strong>128GB</strong>机身内存</span>
               <span><strong>6.1英寸</strong>屏幕尺寸</span>
             </p>
-            <p class="price">￥3299.00</p>
+            <p class="price">
+              <span class="nowPrice">￥{{searchItem.price}}</span>
+              <span class="prePrice" v-if="searchItem.prePrice">￥{{searchItem.prePrice}}</span>  
+            
+            </p>
             <p class="superBan">
-              <span class="super">超级<span>品牌</span></span>
-              <span class="bigParty">大聚会</span>
-            </p>
-            <p class="right4">
-              <span class="info">2.5+条评价</span>
-              <span class="info">好评率99%</span>
-            </p>
-            <p class="shopName">
-              <span class="info name">Apple产品苏宁自营旗舰店 </span>
-              <span class="intoShop info"> 进店></span>
-            </p>
-          </div>
-        </div>
-        <div class="goodItem">
-          <div class="leftImg">
-            <img src="../../common/images/pro.png" alt="">
-          </div>
-          <div class="rightInfo">
-            <p class="right1">
-              <span class="selfBus">自营</span>
-              <span class="title">Apple iPhone 11 128G</span>
-            </p>
-            <p class="right2 info">白色 | 双卡双待 | 全网通 </p>
-            <p class="right3">
-              <span><strong>128GB</strong>机身内存</span>
-              <span><strong>6.1英寸</strong>屏幕尺寸</span>
-            </p>
-            <p class="price">￥3299.00</p>
-            <p class="superBan">
-              <span class="super">超级<span>品牌</span></span>
-              <span class="bigParty">大聚会</span>
-            </p>
-            <p class="right4">
-              <span class="info">2.5+条评价</span>
-              <span class="info">好评率99%</span>
-            </p>
-            <p class="shopName">
-              <span class="info name">Apple产品苏宁自营旗舰店 </span>
-              <span class="intoShop info"> 进店></span>
-            </p>
-          </div>
-        </div>
-        <div class="goodItem">
-          <div class="leftImg">
-            <img src="../../common/images/pro.png" alt="">
-          </div>
-          <div class="rightInfo">
-            <p class="right1">
-              <span class="selfBus">自营</span>
-              <span class="title">Apple iPhone 11 128G</span>
-            </p>
-            <p class="right2 info">白色 | 双卡双待 | 全网通 </p>
-            <p class="right3">
-              <span><strong>128GB</strong>机身内存</span>
-              <span><strong>6.1英寸</strong>屏幕尺寸</span>
-            </p>
-            <p class="price">￥3299.00</p>
-            <p class="superBan">
-              <span class="super">超级<span>品牌</span></span>
-              <span class="bigParty">大聚会</span>
-            </p>
-            <p class="right4">
-              <span class="info">2.5+条评价</span>
-              <span class="info">好评率99%</span>
-            </p>
-            <p class="shopName">
-              <span class="info name">Apple产品苏宁自营旗舰店 </span>
-              <span class="intoShop info"> 进店></span>
-            </p>
-          </div>
-        </div>
-        <div class="goodItem">
-          <div class="leftImg">
-            <img src="../../common/images/pro.png" alt="">
-          </div>
-          <div class="rightInfo">
-            <p class="right1">
-              <span class="selfBus">自营</span>
-              <span class="title">Apple iPhone 11 128G</span>
-            </p>
-            <p class="right2 info">白色 | 双卡双待 | 全网通 </p>
-            <p class="right3">
-              <span><strong>128GB</strong>机身内存</span>
-              <span><strong>6.1英寸</strong>屏幕尺寸</span>
-            </p>
-            <p class="price">￥3299.00</p>
-            <p class="superBan">
-              <span class="super">超级<span>品牌</span></span>
-              <span class="bigParty">大聚会</span>
+              <!-- <span class="super">超级<span>品牌</span></span> -->
+              <span class="bigParty" v-if="searchItem.promotionInfo">{{searchItem.promotionInfo}}</span>
             </p>
             <p class="right4">
               <span class="info">2.5+条评价</span>
@@ -144,11 +61,17 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
+  computed:{
+    ...mapState({
+      searchList : state => state.searchList || []
+    })
+  },
   data() {
     return {
       currentIndex:0,
-      isShow:false,
+      isShow:true,
       hotItems:[
         {text:'手机',color:'rgb(51, 51, 51);'},
         {text:'小米电视',color:'rgb(51, 51, 51);'},
@@ -164,12 +87,19 @@ export default {
       ],
       navItems:[
         '综合','销量','价格','筛选'
-      ]
+      ],
+      currentHotWord:''
     }
   },
   methods: {
     tabClick(index){
       this.currentIndex = index
+    },
+    // 点击热词---将点击的词存到状态便于头部展示、发送搜索请求
+    clickHotSearch(text){
+      this.currentHotWord = text
+      // 将请求回来的数据存到vuex中
+      this.$store.dispatch('getSearchList',text)
     }
   },
 }
@@ -248,14 +178,24 @@ export default {
           font-size 12px
           color #999
         .right1
-          .selfBus
-            font-size 12px
-            color #ff6600
-            border 1px solid #ff6600
-            margin-right 4px
-          .title
+          height 36px
+          span
             font-size 12px
             color #734c01
+            overflow: hidden;    
+            display: -webkit-box;
+            text-overflow:ellipsis;    
+            -webkit-line-clamp:2;  
+            -webkit-box-orient: vertical
+            &.selfBus
+              display inline
+              font-size 12px
+              color #ff6600
+              border 1px solid #ff6600
+              margin-right 4px
+        .right2
+      
+          height 18px
         .right3
           height 35px
           display flex
@@ -270,11 +210,16 @@ export default {
             text-align center
             font-size 13pxk
         .price
-          color #ff6600
-          margin 5px 
+          .nowPrice
+            color #ff6600
+            margin 5px 
+          .prePrice
+            color #999
+            text-decoration line-through
         .superBan
           font-size 12px
           margin-bottom 5px
+          height 18px
           .super
             border 1px solid red
             color #fff
@@ -283,7 +228,7 @@ export default {
               color red
               background-color #fff
           .bigParty
-            padding 1px
+            padding 0 2px
             color #fff
             background-color #f60            
             margin-left 5px

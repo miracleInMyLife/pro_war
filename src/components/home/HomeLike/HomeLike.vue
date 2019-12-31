@@ -5,7 +5,7 @@
     </div>
     <ul class="goods">
       <li v-for="(good,index) in goods" :key="index">
-        <img  :src="good.pictureUrl" alt="">
+        <img :src="good.pictureUrl" alt="">
         <p class="des">{{good.sugGoodsName}}</p>
         <div class="btns">
           <span class="dealer">自营</span>
@@ -24,17 +24,17 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {reqGoods} from '@/api'
+  import {reqGoods,reqGoodInfo} from '@/api'
   export default {
     data(){
       return {
-        goods:[]
+        goods:[],
+        info:{}
       }
     },
     async mounted(){
       let result = await reqGoods()
       if (result.status === 1) {
-        // console.log(result)
         this.goods = result.datas.data.sugGoods[0].skus
       }
     }
@@ -109,5 +109,4 @@
             color #999
     .footImg
       width 100%
-      // margin-bottom 44px
 </style>

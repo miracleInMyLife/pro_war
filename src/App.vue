@@ -5,7 +5,7 @@
     </keep-alive>
     
 		<!-- <GoodDetails></GoodDetails> -->
-		<FooterGuider></FooterGuider>
+		<FooterGuider v-show="$route.meta.isShowFooter"></FooterGuider>
   </div>
 </template>
 

@@ -1,70 +1,22 @@
 <template>
-  <!-- <div class='phoneContainer'>
-    <a href="//c.m.suning.com/bcdetail.html?contentId=5221687499&itemType=bq" class="app-list">
-      <div class="f34">
-         <span>卓越性格，5G手机流畅新体验</span>
-      </div>
-      <ul class="pic-img">
-        <li>
-          <div class="zhezhao"></div>
-          <img src="//image.suning.cn/uimg/MZMS/show/157682617199708574.jpg_340w_340h_1e?from=mobile" alt="">
-          <div class='pro-price'>
-            <i class="acDec borders">每满100减10</i>
-            <i class="rPrice">￥4998</i>
-          </div>
-        </li>
-        <li>
-          <div class="zhezhao"></div>
-          <img src="//image.suning.cn/uimg/MZMS/show/157682617199708574.jpg_340w_340h_1e?from=mobile" alt="">
-          <div class='pro-price'>
-            <i class="acDec borders">每满100减10</i>
-            <i class="rPrice">￥4998</i>
-          </div>
-        </li>
-        <li>
-          <div class="zhezhao"></div>
-          <img src="//image.suning.cn/uimg/MZMS/show/157682617199708574.jpg_340w_340h_1e?from=mobile" alt="">
-          <div class='pro-price'>
-            <i class="acDec borders">每满100减10</i>
-            <i class="rPrice">￥4998</i>
-          </div>
-        </li>
-      </ul>
-    </a>
-      
-  </div> -->
   <div class='telContainer'>
     <Header/>
     <div class="margin"></div>
-    <!-- <AppList></AppList> -->
     <div class='phoneContainer'>
-      <a href="//c.m.suning.com/bcdetail.html?contentId=5221687499&itemType=bq" class="app-list">
+      <a href="//c.m.suning.com/bcdetail.html?contentId=5221687499&itemType=bq" class="app-list"
+       v-for="(li,index) in data.list" :key="index"
+      >
         <div class="f34">
-          <span>卓越性格，5G手机流畅新体验</span>
+          <span>{{li.title}}</span>
         </div>
-        <ul class="pic-img">
-          <li>
+        <ul class="pic-img" >
+          <li v-for=" (price,index) in li.priceData" :key="index">
             <div class="zhezhao"></div>
-            <img src="//image.suning.cn/uimg/MZMS/show/157682617199708574.jpg_340w_340h_1e?from=mobile" alt="">
+            <img :src="price.imageUrl" alt="">
             <div class='pro-price'>
-              <i class="acDec borders">每满100减10</i>
-              <i class="rPrice">￥4998</i>
-            </div>
-          </li>
-          <li>
-            <div class="zhezhao"></div>
-            <img src="//image.suning.cn/uimg/MZMS/show/157682617199708574.jpg_340w_340h_1e?from=mobile" alt="">
-            <div class='pro-price'>
-              <i class="acDec borders">每满100减10</i>
-              <i class="rPrice">￥4998</i>
-            </div>
-          </li>
-          <li>
-            <div class="zhezhao"></div>
-            <img src="//image.suning.cn/uimg/MZMS/show/157682617199708574.jpg_340w_340h_1e?from=mobile" alt="">
-            <div class='pro-price'>
-              <i class="acDec borders">每满100减10</i>
-              <i class="rPrice">￥4998</i>
+              <i class="acDec borders" v-if="price.jianjia">每满{{price.jianjia}}减{{price.jiage}}</i>
+              <div :class="{zhezhao1:!price.jianjia}"></div>
+              <i class="rPrice">￥{{price.price}}</i>
             </div>
           </li>
         </ul>
@@ -75,20 +27,19 @@
 
 <script type="text/ecmascript-6">
     import {mapState} from 'vuex'
-
-
       export default {
         computed: {
           ...mapState(['data'])
         },
         mounted() {
           this.$store.dispatch('getCoolMachine')
+          console.log(this.data)
         },
       }
 </script>
-
 <style scoped lang="stylus" rel="stylesheet/stylus">
     .telContainer
+      overflow-x hidden
       height 100%
       width 100%
       margin-bottom 20px
@@ -174,4 +125,9 @@
                   width 100%
                   text-align center
                   font-style: normal
+                .zhezhao1
+                  width 100%
+                  height 22px
+                  z-index 999
+                  background-color transparent
 </style>

@@ -30,56 +30,91 @@ import Closes from '../pages/mustBuy/channel/closes.vue'
 import Category from '../pages/category/category.vue'
 import Home from '../pages/Home/Home.vue'
 import Profile from '../pages/profile/profile.vue'
+// import ShopCar from '../pages/shopCar/ShopCart.vue'
 import ShopCar from '../pages/shopCar/shopCar.vue'
+import Login from '../pages/Login/Login.vue'
 
 
 
 export default [
     {
         path:'/home',
-        component:Home
+        component:Home,
+        meta: {
+            isShowFooter: true
+        }
     },
     {
         path:'/category',
         component: Category, 
+        meta: {
+            isShowFooter: true
+        }
     },
     {
         path:'/mustBuy',
         component: MustBuy,
+        meta: {
+            isShowFooter: true
+        },
         children:[
             {
                 path:'careChoice',
                 component: CareChoice,
+                meta: {
+                    isShowFooter: true
+                }
             },
             {
                 path:'coolMachine',
                 component: CoolMachine,
+                meta: {
+                    isShowFooter: true
+                }
             },
             {
                 path:'electrics',
                 component: Electrics,
+                meta: {
+                    isShowFooter: true
+                }
             },
             {
                 path:'supermarket',
                 component: Supermarket,
+                meta: {
+                    isShowFooter: true
+                }
             },
             {
                 path:'closes',
                 component: Closes,
+                meta: {
+                    isShowFooter: true
+                }
             },
             {
                 path:'',
                 redirect: 'careChoice',
+                meta: {
+                    isShowFooter: true
+                }
             }
         ]
     },
     {
         path:'/shopCar',
         component: ShopCar,
+        meta: {
+            isShowFooter: true
+        }
     },
     {
         path:'/profile',
         component: Profile,
+        meta: {
+            isShowFooter: true
+        }
     },
     {
         path:'',
@@ -88,6 +123,10 @@ export default [
     {
         path:'/search',
         component: Search,
+    },
+    {
+        path:'/login',
+        component: Login,
     },
     {
         path:'/gooddetail',

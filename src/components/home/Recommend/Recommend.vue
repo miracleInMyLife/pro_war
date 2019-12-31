@@ -43,36 +43,12 @@
     </ul>
     <div class="panicBuy">
       <ul class="panicUl">
-        <li>
-          <h3>限时抢购<span>人气榜</span></h3>
-          <p>潮流好物限时抢</p>
+        <li v-for="(li,index) in list.Lists" :key="index">
+          <h3>{{li.title}}<span>{{li.listName}}</span></h3>
+          <p>{{li.name}}</p>
           <div class="panImg">
-            <img src="https://image.suning.cn/uimg/b2c/qrqm/0000000000000000010288345525.jpg?format=_is_200w_200h_4e.webp" alt="">
-            <img src="https://image.suning.cn/uimg/b2c/qrqm/0000000000000000010288345525.jpg?format=_is_200w_200h_4e.webp" alt="">
-          </div>
-        </li>
-        <li>
-          <h3>限时抢购<span>人气榜</span></h3>
-          <p>潮流好物限时抢</p>
-          <div class="panImg">
-            <img src="https://image.suning.cn/uimg/b2c/qrqm/0000000000000000010288345525.jpg?format=_is_200w_200h_4e.webp" alt="">
-            <img src="https://image.suning.cn/uimg/b2c/qrqm/0000000000000000010288345525.jpg?format=_is_200w_200h_4e.webp" alt="">
-          </div>
-        </li>
-        <li>
-          <h3>限时抢购<span>人气榜</span></h3>
-          <p>潮流好物限时抢</p>
-          <div class="panImg">
-            <img src="https://image.suning.cn/uimg/b2c/qrqm/0000000000000000010288345525.jpg?format=_is_200w_200h_4e.webp" alt="">
-            <img src="https://image.suning.cn/uimg/b2c/qrqm/0000000000000000010288345525.jpg?format=_is_200w_200h_4e.webp" alt="">
-          </div>
-        </li>
-        <li>
-          <h3>限时抢购<span>人气榜</span></h3>
-          <p>潮流好物限时抢</p>
-          <div class="panImg">
-            <img src="https://image.suning.cn/uimg/b2c/qrqm/0000000000000000010288345525.jpg?format=_is_200w_200h_4e.webp" alt="">
-            <img src="https://image.suning.cn/uimg/b2c/qrqm/0000000000000000010288345525.jpg?format=_is_200w_200h_4e.webp" alt="">
+            <img :src="li.picurl1" alt="">
+            <img :src="li.picurl2" alt="">
           </div>
         </li>
       </ul>
@@ -83,8 +59,18 @@
 <script type="text/ecmascript-6">
   import Swiper from 'swiper'
   import 'swiper/css/swiper.css'
+  import {reqDesc} from '@/api'
   export default {
-    mounted(){
+    data(){
+      return {
+        list:{},
+      }
+    },
+    async mounted(){
+      let result = await reqDesc()
+      if (result.status === 1) {
+        this.list = result.datas.sugGoods[2]
+      }
       new Swiper(this.$refs.vertical,{
         direction: 'vertical',
         autoplay: {

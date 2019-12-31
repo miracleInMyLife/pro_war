@@ -1,35 +1,22 @@
 <template>
-  <div class='phoneContainer' v-if="data.skus">
-    <a href="//c.m.suning.com/bcdetail.html?contentId=5221687499&itemType=bq" class="app-list">
+  <div class='phoneContainer' v-if="data.buyList.skus">
+    <a href="//c.m.suning.com/bcdetail.html?contentId=5221687499&itemType=bq" class="app-list"
+     v-for="(sk,index) in data.buyList.skus" :key="index"
+    >
       <div class="f34">
-         <span>{{data.skus[0].title}}</span>
+         <span >{{sk.title}}</span>
       </div>
-      <ul class="pic-img" v-if="data.skus">
-        <li v-for="(gd,index) in data.skus[0].gds" :key="index">
+      <ul class="pic-img">
+        <li v-for="(gd,index) in sk.gds" :key="index">
           <div class="zhezhao"></div>
-          <!-- <img src="//image.suning.cn/uimg/MZMS/show/157682617199708574.jpg_340w_340h_1e?from=mobile" alt=""> -->
           <img :src="gd.pictureUrl" alt=""> 
           <div class='pro-price'>
-            <i class="acDec borders">每满100减10</i>
+            <i class="acDec borders" v-if="gd.jiage">每满{{gd.jiage}}减{{gd.jianjia}}</i>
+            <div :class="{zhezhao1:!gd.jiage}"></div>
             <i class="rPrice">￥{{gd.price}}</i>
           </div>
         </li>
-        <!-- <li>
-          <div class="zhezhao"></div>
-          <img src="//image.suning.cn/uimg/MZMS/show/157682617199708574.jpg_340w_340h_1e?from=mobile" alt="">
-          <div class='pro-price'>
-            <i class="acDec borders">每满100减10</i>
-            <i class="rPrice">￥4998</i>
-          </div>
-        </li>
-        <li>
-          <div class="zhezhao"></div>
-          <img src="//image.suning.cn/uimg/MZMS/show/157682617199708574.jpg_340w_340h_1e?from=mobile" alt="">
-          <div class='pro-price'>
-            <i class="acDec borders">每满100减10</i>
-            <i class="rPrice">￥4998</i>
-          </div>
-        </li> -->
+
       </ul>
     </a>
       
@@ -41,19 +28,18 @@ import {mapState} from 'vuex'
 
   export default {
     computed: {
-      ...mapState(['data']),
+      ...mapState(['data'])
 
-      // even(){
-      //   let n 
-      //   if(n % 2 === 0){
-      //      return n  
-      //   }
-        
-      // },
     },
     mounted() {
       this.$store.dispatch('getSelect')
+      console.log(this.data)
     },
+    data(){
+      return{
+        isShow:false
+      }
+    }
   }
 </script>
 
@@ -127,14 +113,21 @@ import {mapState} from 'vuex'
                 padding: 3px;
                 border: 1px solid #ff2a57;
                 font-style: normal;
-              .borders
-                border: 1px solid #ff2a57;
-                background: #ffedef
-                font-style: normal;
-              .rPrice
-                color #a5a5a5
-                margin  5px 0 0 0
+              .zhezhao1
                 width 100%
-                text-align center
-                font-style: normal
+                height 22px
+                z-index 999
+                background-color transparent
+                &.borders
+                  border: 1px solid #ff2a57
+                  background: #ffedef
+                  font-style: normal
+                .rPrice
+                  display block
+                  color #a5a5a5
+                  margin  5px 0 0 0
+                  width 100%
+                  text-align center
+                  font-style: normal
+                
 </style>
