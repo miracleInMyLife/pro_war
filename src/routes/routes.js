@@ -18,7 +18,7 @@ import GoodDetail from '../components/GoodDetail/GoodDetail.vue'
 import Imgs from '../components/GoodDetail/Imgs.vue'
 import Parameter from '../components/GoodDetail/Parameter.vue'
 import Questions from '../components/GoodDetail/Questions.vue'
-import Search from '../components/search/search.vue'
+import Search from '../pages/search/search.vue'
 
 // 必买清单
 import MustBuy from '../pages/mustBuy/mustBuy.vue'
@@ -30,9 +30,11 @@ import Closes from '../pages/mustBuy/channel/closes.vue'
 import Category from '../pages/category/category.vue'
 import Home from '../pages/Home/Home.vue'
 import Profile from '../pages/profile/profile.vue'
+import Setup from '../pages/SetUp/SetUp.vue'
 // import ShopCar from '../pages/shopCar/ShopCart.vue'
 import ShopCar from '../pages/shopCar/shopCar.vue'
 import Login from '../pages/Login/Login.vue'
+
 
 
 
@@ -115,6 +117,10 @@ export default [
         meta: {
             isShowFooter: true
         }
+    },
+    {
+        path:'/setup',
+        component: Setup,
     },
     {
         path:'',

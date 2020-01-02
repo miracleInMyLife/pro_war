@@ -14,3 +14,4 @@ export const REQ_GUESSLIKE= 'reqguesslike'
 export const REQ_SEARCHLIST= 'reqsearchlist'
 
 export const CLEARSEARCHLIST= 'clearsearchlist'
+export const SORTSEARCH= 'sortsearch'

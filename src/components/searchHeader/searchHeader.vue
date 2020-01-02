@@ -5,7 +5,7 @@
     <i class="iconfont icon-tubiaolunkuo-"></i>
     <input type="text" v-model="keyWord" placeholder="请输入内容搜索"/>
   </div>
-  <span class="search" v-if="isShow || isCa">搜索</span>
+  <span class="search" v-if="isShow">搜索</span>
   <span class="iconfont icon-classify_icon" v-else></span>
 </div>
 </template>

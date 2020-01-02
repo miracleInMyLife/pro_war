@@ -1,5 +1,5 @@
 
-import {REQ_BUYLIST,REQ_CoolMachine,REQ_TABBAR,REQ_ELECTRICS,REQ_CATEGORY,REQ_GUESSLIKE,REQ_SEARCHLIST,CLEARSEARCHLIST} from './mutation_type'
+import {REQ_BUYLIST,REQ_CoolMachine,REQ_TABBAR,REQ_ELECTRICS,REQ_CATEGORY,REQ_GUESSLIKE,REQ_SEARCHLIST,CLEARSEARCHLIST,SORTSEARCH} from './mutation_type'
 
 export default {
   [REQ_BUYLIST](state,data){
@@ -26,5 +26,10 @@ export default {
   },
   [CLEARSEARCHLIST](state){
     state.searchList = []
+  },
+
+  // 搜索排序
+  [SORTSEARCH](state,newData){
+    state.searchList =newData
   }
 }

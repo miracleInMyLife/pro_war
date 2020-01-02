@@ -1,11 +1,18 @@
 <template>
-  <div>
+  <div class='categoryContainer'>
+      <div class="zj_search">
+         <span class="iconfont icon">&#xe642;</span> 
+         <div class="search">
+           <span class="iconfont i">&#xe643;</span> 
+           <input  type="text " placeholder="搜索商品或店铺" placeholder-class='searchpl' @click="$router.push('/search')">
+         </div>
+      </div>
       <div class="sn-list-box">
-        <div class="sn-list-nav" ref="left" v-if="data1.category">
+        <div class="sn-list-nav" ref="left" v-if="category.category">
           <ul ref='leftUI'>
             <li class=" kindsAds" :class="{cur: index === currentIndex}" 
              @click="clickItem(index)" 
-             v-for="(category,index) in data1.category" 
+             v-for="(category,index) in category.category" 
              :key="category.title">
               <div class="before"></div>
               {{category.title}}
@@ -13,9 +20,11 @@
             </li>
           </ul>
         </div>
-        <div class="sn-list-con" ref="right" v-if="data1.category">
-          <ul class="con-box"  ref="rightUl">
-            <li v-for="(ct,index) in data1.category" :key="ct.title">
+        <img class='img1' src="//image1.suning.cn/uimg/asbs/ad/1577703779565_app_list.jpg" alt="">
+        
+        <div class="sn-list-con" ref="right" v-if="category.category">
+          <ul class="con-box"  ref="rightUl">       
+            <li v-for="(ct,index) in category.category" :key="ct.title">
               <div class="newRecommendList"></div>
               <hgroup class="module-title class-title">
                 <div class="line"></div>
@@ -47,21 +56,19 @@ import BScroll from 'better-scroll'
   export default {
     data(){
       return{
-      //  current:0,
        scrollY:0,
        tops:[]
       }
     },
 
    computed: {
-      ...mapState({
-        "data1":"data" || {}
-      }),
-      
+
+      ...mapState(['category']),  
+
       currentIndex(){
         const {scrollY,tops} = this
         const index = tops.findIndex((top,index)=>scrollY>=top && scrollY<tops[index+1])
-        console.log(index, scrollY)
+        // console.log(index, scrollY)
         if(index != this.index && this.leftScroll){
             this.index = index
             const li = this.$refs.leftUI.children[index]
@@ -72,18 +79,18 @@ import BScroll from 'better-scroll'
     },
    
     methods: {
-      _initScroll(){
 
+      _initScroll(){
         if(!this.leftScroll ){
 
-          this.leftScroll = new BScroll(this.$refs.left,{
-            click:true
+          this.leftScroll = new BScroll(this.$refs.left,{           
+            probeType: 2,
+            click:true,
           })
           this.rightScroll = new BScroll(this.$refs.right,{
              probeType: 2,
              click:true
           })
-
           // 绑定监听
           this.rightScroll.on('scroll',({x,y})=>{
             console.log(y,'111')
@@ -92,8 +99,8 @@ import BScroll from 'better-scroll'
           this.rightScroll.on('scrollEnd',({x,y})=>{
             console.log(y,'hhh')
             this.scrollY = Math.abs(y)
-
           })
+
         }else{
           // 重新刷新
           this.leftScroll.refresh()
@@ -116,13 +123,13 @@ import BScroll from 'better-scroll'
 
     clickItem (index) {  
       const top = this.tops[index]
-      // this.scrollY = top
+      this.scrollY = top
       console.log(top, 'top')
       this.rightScroll.scrollTo(0, -top,100)
     },
-  },
-     watch: {
-      data1() { 
+  },    
+    watch: {
+      category() { 
         this.$nextTick(() => {
           this._initScroll()
           this._initTops()
@@ -134,7 +141,7 @@ import BScroll from 'better-scroll'
         this.$store.dispatch('getCategory')
 
    // 如果数据已经有了, 直接做初始化的操作
-        if (this.data1.length>0) {
+        if (this.category.length>0) {
         //   console.log('mounted data')
           this._initScroll()
           this._initTops()
@@ -146,19 +153,65 @@ import BScroll from 'better-scroll'
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
+  .categoryContainer
+    width 100%
+    height 100%  
+    // overflow-y hidden 
+    .zj_search
+      width 100%
+      height 44px
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 98;
+      background-color #F4F4F4
+      border-bottom 1px solid #DCDCDC
+      .icon
+        color #353d44
+        position absolute
+        top 15px
+        left 3px
+      .search
+        position absolute
+        top 7px
+        left 40px
+        width 86%
+        height 30px
+        background-color #ffffff
+        border 1px solid #cccccc
+        border-radius 4px       
+        .i
+          display block
+          float left 
+          width 10%
+          height 30px
+          color #cacaca
+          background-size 100%
+          line-height 30px
+          text-align center
+          font-size 18px
+        input
+          width 90%
+          height 30px 
+          line-height 44px
+          color #cacaca
+          font-size 13px
+          position absolute
+        .searchpl
+          color #cacaca
     .sn-list-box
       width 100vw
       background-color #ffffff
       margin-top 44px
       .sn-list-nav
-        overflow-x hidden
-        overflow-y hidden
-        position fixed
+        // overflow-x hidden
+        // overflow-y hidden
+        position absolute
         left 0
         top 44px
         height calc(100vh - 44px)
         width 87px
-        overflow-y auto 
         z-index 50
         background-color: #f4f4f4;
         ul
@@ -174,6 +227,7 @@ import BScroll from 'better-scroll'
             border-bottom: 1px solid #e9e9e9;
             box-sizing: border-box;
             color: #666;
+            background-color: #f4f4f4;
             &.cur 
               border-right-color: transparent;
               background: #FFF;
@@ -191,15 +245,19 @@ import BScroll from 'better-scroll'
               top 0
               height 100%
               width 4px
+      .img1
+        width 270px
+        height 100px
+        margin  10px 0 10px 97px
       .sn-list-con
         box-sizing border-box
         margin 0 0 0 86px
         padding 10px
-        overflow auto 
+        overflow-y hidden 
         //  问题：用better-scroll要加高度
         height calc(100vh - 44px)
         .con-box
-          width 270px
+          width 270px 
           li
             width 100%
             height 100%
@@ -257,7 +315,7 @@ import BScroll from 'better-scroll'
                       position: absolute;
                       left: 0;
                       top: 0;
-                      background: url(imgs/patternless.png) no-repeat;
+                      // background: url(imgs/patternless.png) no-repeat;
                       background-size: cover;
                       z-index: 3
                     em 

@@ -7,7 +7,7 @@
           <div class="titleCenter">
             <span>我的易购</span>
           </div>
-          <div class="titleRight">
+          <div class="titleRight" @click="$router.push('/setup')">
             <img src="../../common/images/setting.png" alt="">
           </div>
       </div>

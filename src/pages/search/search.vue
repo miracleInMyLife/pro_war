@@ -62,6 +62,7 @@
 
 <script>
 import {mapState} from 'vuex'
+import {SORTSEARCH} from '../../vuex/mutation_type'
 export default {
   computed:{
     ...mapState({
@@ -94,6 +95,16 @@ export default {
   methods: {
     tabClick(index){
       this.currentIndex = index
+      // if (index == 2) {
+      //   console.log('点的是2')
+      //   this.searchList.sort((a,b)=>{
+      //     const a1 = a.price
+      //     const a2 = a2.price
+
+          
+      //   })
+      //   this.$store.commit(SORTSEARCH,)
+      }
     },
     // 点击热词---将点击的词存到状态便于头部展示、发送搜索请求
     clickHotSearch(text){
@@ -101,7 +112,10 @@ export default {
       // 将请求回来的数据存到vuex中
       this.$store.dispatch('getSearchList',text)
     }
-  },
+  
+  // watch: {
+  //   searchList(){}
+  // },
 }
 </script>
 

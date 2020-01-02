@@ -29,8 +29,17 @@ export const reqSmsCode = (phone) => ajax('/reqCode',{params:{phone}})
 export const reqSmsLogin = (phone,code) => ajax.post('/loginSms',{phone,code})
 // 请求用户名密码登录
 export const reqTextLogin = (username,pwd) => ajax.post('/loginText',{username,pwd})
+// 自动登陆
+export const reqAutoLogin = () => ajax('/auto_login')
 
+//获取赚钱的轮播图
+export const reqRecommendBanner = () => ajax('/money/getRecommendBanner')
 
+//获取赚钱的导航
+export const reqRecommendGate = () => ajax('/money/getGate')
+
+//获取赚钱的金融优选
+export const reqRecommendBank = () => ajax('/money/getRecommendBank')
 
 // 首页请求
 export const reqHomeCategory = () => ajax('/msite/category')
@@ -41,3 +50,5 @@ export const reqGoods = () => ajax('/msite/homegoods')
 
 // 搜索请求
 export const reqSearchList = (keyword) => ajax.post('/search',{keyword})
+
+

@@ -60,4 +60,22 @@ export default{
       commit(REQ_SEARCHLIST,data)
     }
    },
+
+   /* 
+    保存用户
+    */
+  saveUser ({commit}, user) {
+    const token = user.token
+    // 将token保存local
+    localStorage.setItem('token_key', token)
+
+    delete user.token  // 删除user内部的token
+
+    // 将token保存到state
+    commit(RECEIVE_USER, {user})
+    // 将user保存到state
+    commit(RECEIVE_TOKEN, {token})
+  },
+
+
 }
