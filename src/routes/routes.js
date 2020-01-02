@@ -31,8 +31,8 @@ import Category from '../pages/category/category.vue'
 import Home from '../pages/Home/Home.vue'
 import Profile from '../pages/profile/profile.vue'
 import Setup from '../pages/SetUp/SetUp.vue'
-// import ShopCar from '../pages/shopCar/ShopCart.vue'
-import ShopCar from '../pages/shopCar/shopCar.vue'
+import ShopCar from '../pages/shopCar/ShopCart.vue'
+// import ShopCar from '../pages/shopCar/shopCar.vue'
 import Login from '../pages/Login/Login.vue'
 
 

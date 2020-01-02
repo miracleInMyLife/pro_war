@@ -76,6 +76,5 @@ export default{
     // 将user保存到state
     commit(RECEIVE_TOKEN, {token})
   },
-】】】】
 
 }
